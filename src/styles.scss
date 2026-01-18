@@ -1,3 +1,19 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import "@fontsource/quicksand/300.css";
+@import "@fontsource/quicksand/400.css";
+@import "@fontsource/quicksand/500.css";
+@import "@fontsource/quicksand/600.css";
+@import "@fontsource/quicksand/700.css";
+:root {
+  --text-primary: #3d3d3d;      /* màu chữ chính */
+  --text-secondary: #4B5563;    /* chữ phụ */
+  --text-muted: #9CA3AF;        /* ghi chú */
+}
+body {
+  font-family: 'Quicksand', sans-serif;
+  p{
+    text-align: start;
+  }
+}
