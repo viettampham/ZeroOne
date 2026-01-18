@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Angular 17.3.12
 ## Tailwinds tailwindcss@3.4.19
-## FeatherIcon feather-icons@4.29.2
+## FeatherIcon feather-icons@4.29.2 https://github.com/michaelbazos/angular-feather
 
 ## Development server
 

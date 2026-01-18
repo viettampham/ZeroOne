@@ -5,30 +5,31 @@
                 <img class="logoimg w-24 h-auto rounded-full overflow-hidden" src="assets/images/logo.png" alt="Logo">
             </div>
             <p class="textmain text-2xl mt-2">Sign in to your account</p>
-            <div class="loginForm mt-8">
-                <div>
-                    <p class="text-base font-bold">Tên đăng nhập</p>
-                    <input id="username" nz-input placeholder="Tên đăng nhập" [(ngModel)]="username" type="text" />
-                </div>
-                <div class="mt-3">
-                    <p class="text-base font-bold">Mật khẩu</p>
-                    <div class="relative">
-                        <input id="password" nz-input placeholder="Mật khẩu" [(ngModel)]="password" [type]="typepwd" />
-                        <span (click)="OnChangeTypePassword()" class="absolute"
-                            style="right: 0;font-size: 20px;padding: 5px;" nz-icon [nzType]="iconpwd"
-                            nzTheme="outline"></span>
+            <form nz-form [formGroup]="LoginForm">
+                <div class="loginForm mt-8">
+                    <div>
+                        <p class="text-base font-bold">Tên đăng nhập</p>
+                        <input id="username" nz-input placeholder="Tên đăng nhập" formControlName="username"
+                            type="text" />
                     </div>
-                    <i data-feather="eye"></i>
-                    <i data-feather="eye-off"></i>
-                    <i data-feather="user"></i>
+                    <div class="mt-3">
+                        <p class="text-base font-bold">Mật khẩu</p>
+                        <div class="relative">
+                            <input id="password" nz-input placeholder="Mật khẩu" formControlName="password"
+                                [type]="typepwd" />
+                            <i-feather *ngIf="!showpwd" style="position: absolute; top: 3px; right: 8px; padding: 3px;"
+                                (click)="OnChangeTypePassword()" name="eye"></i-feather>
+                            <i-feather *ngIf="showpwd" style="position: absolute; top: 3px; right: 8px; padding: 3px;"
+                                (click)="OnChangeTypePassword()" name="eye-off"></i-feather>
+                        </div>
 
+                    </div>
 
+                    <div class="mt-5">
+                        <button (click)="HandleLogin()" nz-button nzType="primary">Đăng nhập</button>
+                    </div>
                 </div>
-
-                <div class="mt-5">
-                    <button nz-button nzType="primary">Đăng nhập</button>
-                </div>
-            </div>
+            </form>
 
 
         </div>
