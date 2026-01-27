@@ -1,0 +1,42 @@
+<nz-layout>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+        <div class="logo">
+            <img class="logoimg h-auto w-20 rounded-full overflow-hidden m-auto mt-4 mb-4" src="assets/images/logo.png" alt="Logo">
+        </div>
+        <ul nz-menu nzTheme="dark" nzMode="inline">
+            
+          <li nz-submenu nzTitle="User" nzIcon="User">
+            <ul>
+              <li nz-menu-item>Tom</li>
+              <li nz-menu-item>Bill</li>
+              <li nz-menu-item>Alex</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Team" nzIcon="team">
+            <ul>
+              <li nz-menu-item>Team 1</li>
+              <li nz-menu-item>Team 2</li>
+            </ul>
+          </li>
+          <li nz-menu-item>
+            <span nz-icon nzType="file"></span>
+            <span>File</span>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-layout>
+        <nz-header>
+          <i-feather class="trigger" style="padding: 1px;margin-left: 10px;"
+                                (click)="isCollapsed = !isCollapsed" name="Menu"></i-feather>
+           
+        </nz-header>
+        <nz-content>
+          <nz-breadcrumb>
+            <nz-breadcrumb-item>User</nz-breadcrumb-item>
+            <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+          </nz-breadcrumb>
+          <div class="inner-content">Bill is a cat.</div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+      </nz-layout>
+    </nz-layout>
