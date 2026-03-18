@@ -1,19 +1,28 @@
 .trigger {
-        font-size: 18px;
-        line-height: 64px;
-        padding: 0 24px;
-        cursor: pointer;
-        transition: color 0.3s;
-      }
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
 
-      .trigger:hover {
-        color: #1890ff;
-      }
+  &:hover {
+    color: #1890ff;
+  }
+}
 
-      .logo {
-        height: 52px;
-        margin: 16px;
-      }
+.logo {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .logo-img {
+    width: 120px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
 
       nz-header {
         background: #fff;

@@ -12,6 +12,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { ApiService } from '../services/api.service';
+import { LoginResponse } from '../model/ResponseModel/LoginResponse';
+import {provideHttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -29,9 +32,16 @@ export class LoginComponent {
   showpwd: boolean = false;
   LoginForm!: FormGroup;
 
-  constructor(private feather: FeatherService, private formBuilder: FormBuilder, private router: Router, private fb: NonNullableFormBuilder, private notification: NzNotificationService) {
+  constructor(
+    private feather: FeatherService, 
+    private formBuilder: FormBuilder, 
+    private router: Router, 
+    private fb: NonNullableFormBuilder, 
+    private notification: NzNotificationService,
+    private apiService: ApiService
+  ) {
     this.LoginForm = this.formBuilder.group({
-      username: [null, [Validators.required, Validators.minLength(3)]],
+      code: [null, [Validators.required, Validators.minLength(3)]],
       password: [null, [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -53,12 +63,17 @@ export class LoginComponent {
     });
   }
 
-
-
   HandleLogin() {
-
     if (this.LoginForm.valid) {
-      this.router.navigate(['/dashboard']);
+      this.apiService.Login(this.LoginForm.value).subscribe((res: any)=>{
+        if(res.data){
+          sessionStorage.setItem('token', res.data);
+          this.router.navigate(['/dashboard']);
+        }else{
+          alert("Đăng nhập thất bại, vui lòng kiểm tra lại thông tin đăng nhập!");
+        }
+      });
+      
     } else {
       this.notification.warning(
         'Thông báo',
