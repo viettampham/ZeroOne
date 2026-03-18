@@ -5,7 +5,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FeatherService } from '../shared/feather.service';
 import { IconsModule } from '../icons/icons.module';
-
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -14,7 +14,8 @@ import { IconsModule } from '../icons/icons.module';
     NzMenuModule,
     NzBreadCrumbModule,
     NzIconModule,
-    IconsModule
+    IconsModule,
+    NzDropDownModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

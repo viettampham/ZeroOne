@@ -29,9 +29,28 @@
   </nz-sider>
   <nz-layout>
     <nz-header>
-      <span class="trigger" (click)="isCollapsed = !isCollapsed">
+      <span class="trigger" style="padding: 4px;;" (click)="isCollapsed = !isCollapsed">
         <i-feather name="menu" ></i-feather>
       </span>
+
+      <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+        PHẠM VIẾT TÂM
+        <span nz-icon nzType="down"></span>
+      </a>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item>Thông tin cá nhân</li>
+          <li nz-menu-item>Đổi mật khẩu</li>
+          <li nz-menu-divider></li>
+          <li nz-submenu nzTitle="sub menu">
+            <ul>
+              <li nz-menu-item>3rd menu item</li>
+              <li nz-menu-item>4th menu item</li>
+            </ul>
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+      
     </nz-header>
     <nz-content>
       <nz-breadcrumb>
