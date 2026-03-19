@@ -1,16 +1,16 @@
 <nz-layout style="height: 100vh;">
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <nz-sider class="sider" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzWidth]="250">
     <div class="logo">
       <img class="logo-img" src="assets/images/logo.png" alt="Logo">
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-menu-item nzMatchRouter>
         <span nz-icon nzType="dashboard"></span>
-        <span>Tổng quan</span>
+        <span [routerLink]="['/dashboard']">Tổng quan</span>
       </li>
-      <li nz-submenu nzTitle="User" nzIcon="user">
+      <li nz-submenu nzTitle="Quản lý danh mục" nzIcon="user">
         <ul>
-          <li nz-menu-item>Tom</li>
+          <li nz-menu-item (click)="navigateTo('QuanLyNhanVien')">Quản lý nhân viên</li>
           <li nz-menu-item>Bill</li>
           <li nz-menu-item>Alex</li>
         </ul>
@@ -58,7 +58,8 @@
         <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
       </nz-breadcrumb>
       <div class="inner-content">
-        <p>Nội dung trang Dashboard.</p>
+        <router-outlet>
+        </router-outlet>
       </div>
     </nz-content>
     <nz-footer>ZeroOne ©{{ currentYear }}</nz-footer>
