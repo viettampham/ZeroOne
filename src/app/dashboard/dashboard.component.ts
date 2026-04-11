@@ -8,9 +8,10 @@ import { IconsModule } from '../icons/icons.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { Router, RouterModule } from '@angular/router';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
-import { UserOutline } from '@ant-design/icons-angular/icons';
+import { UserAddOutline } from '@ant-design/icons-angular/icons';
+import { CommonModule } from '@angular/common';
 
-const icons = [UserOutline];
+const icons = [UserAddOutline];
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -21,7 +22,8 @@ const icons = [UserOutline];
     NzIconModule,
     IconsModule,
     NzDropDownModule,
-    RouterModule
+    RouterModule,
+    CommonModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -39,7 +41,15 @@ export class DashboardComponent {
     this.feather.replace();
   }
 
-  navigateTo(page: string){
+  breadcrumbs = ['Trang chủ'];
+
+  // thay đổi giá trị
+  changeBreadcrumb(x1: string, x2: string) {
+    this.breadcrumbs = [x1, x2,];
+  }
+
+  navigateTo(page: string, x1: string, x2:string){
+    this.changeBreadcrumb(x1,x2);
     switch(page){
       case 'QuanLyNhanVien':
         this.router.navigate(['/dashboard/quanlynhanvien']);

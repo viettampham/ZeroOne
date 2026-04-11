@@ -6,13 +6,14 @@
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-menu-item nzMatchRouter>
         <span nz-icon nzType="dashboard"></span>
-        <span [routerLink]="['/dashboard']">Tổng quan</span>
+        <span [routerLink]="['/dashboard']" (click)="navigateTo('Dashboard','Trang chủ','')">Tổng quan</span>
       </li>
       <li nz-submenu nzTitle="Quản lý danh mục" nzIcon="user">
         <ul>
-          <li nz-menu-item (click)="navigateTo('QuanLyNhanVien')">Quản lý nhân viên</li>
-          <li nz-menu-item>Bill</li>
-          <li nz-menu-item>Alex</li>
+          <li nz-menu-item (click)="navigateTo('QuanLyNhanVien','Trang chủ','Quản lý nhân viên')">Quản lý nhân viên</li>
+          <li nz-menu-item>Quản lý máy</li>
+          <li nz-menu-item>Quản lý model</li>
+          <li nz-menu-item>Quản lý Checksheet</li>
         </ul>
       </li>
       <li nz-submenu nzTitle="Team" nzIcon="team">
@@ -30,11 +31,11 @@
   <nz-layout>
     <nz-header>
       <span class="trigger" style="padding: 4px;;" (click)="isCollapsed = !isCollapsed">
-        <i-feather name="menu" ></i-feather>
+        <span nz-icon nzType="bars"></span>
       </span>
 
-      <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-        PHẠM VIẾT TÂM
+      <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" style="display: flex;justify-content: center;align-items: center;">
+        <span style="background-color: #bababa;width: 40px;height: 38px;display: flex;justify-content: center;align-items: center;font-size: 20px;border-radius: 100%;"><span nz-icon nzType="user"></span></span>PHẠM VIẾT TÂM
         <span nz-icon nzType="down"></span>
       </a>
       <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -54,8 +55,9 @@
     </nz-header>
     <nz-content>
       <nz-breadcrumb>
-        <nz-breadcrumb-item>User</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngFor="let item of breadcrumbs">
+          {{ item }}
+        </nz-breadcrumb-item>
       </nz-breadcrumb>
       <div class="inner-content">
         <router-outlet>
