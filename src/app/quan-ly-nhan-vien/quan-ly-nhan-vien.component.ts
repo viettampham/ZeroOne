@@ -12,7 +12,14 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { PlusOutline } from '@ant-design/icons-angular/icons';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { FormControl, FormBuilder, FormGroup, Validators, NonNullableFormBuilder,ReactiveFormsModule  } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NzFormDirective } from "ng-zorro-antd/form";
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { BoPhanResponseModal } from '../model/ResponseModel/BoPhanResponseModal';
+import { KhuVucResponseModal } from '../model/ResponseModel/KhuVucResponseModal';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 const icons = [PlusOutline];
 @Component({
   selector: 'app-quan-ly-nhan-vien',
@@ -28,6 +35,10 @@ const icons = [PlusOutline];
     NzPaginationModule,
     NzModalModule,
     ReactiveFormsModule,
+    NzFormDirective,
+    NzSelectModule,
+    NzFormModule,
+    NzNotificationModule
   ],
   templateUrl: './quan-ly-nhan-vien.component.html',
   styleUrl: './quan-ly-nhan-vien.component.scss',
@@ -37,15 +48,24 @@ const icons = [PlusOutline];
 })
 export class QuanLyNhanVienComponent {
   FormAddNhanVien: FormGroup;
-
-  constructor(private api: ApiService, private formBuilder: FormBuilder, ) {
+  SearchForm: FormGroup;
+  bophanOptions: BoPhanResponseModal[] = [];
+  khuvucOption: KhuVucResponseModal[] = [];
+  constructor(private api: ApiService, private formBuilder: FormBuilder, private notification: NzNotificationService) {
     this.FormAddNhanVien = this.formBuilder.group({
-        Code: ['', [Validators.required]],
-        UserName: ['', [Validators.required]],
-        Password: ['', [Validators.required]],
-        BoPhan: ['', [Validators.required]],
-        GhiChu: ['']
-      });
+      Code: ['', [Validators.required]],
+      Hoten: ['', [Validators.required]],
+      Password: [null, [Validators.required]],
+      Bophan: [null, [Validators.required]],
+      KhuVuc: [null, [Validators.required]],
+      Ghichu: ['']
+    });
+
+    this.SearchForm = this.formBuilder.group({
+      code: "",
+      hoten: "",
+      bophan: ""
+    });
   }
   titleModal = 'Thêm nhân viên';
   isVisible = false;
@@ -65,11 +85,27 @@ export class QuanLyNhanVienComponent {
     this.GetNhanVien();
   }
 
+  loadBoPhan() {
+    this.api.GetBoPhan().subscribe((res: any) => {
+      this.bophanOptions = res.listData;
+      console.log(this.bophanOptions);
+    });
+  }
+
+  GetKhuVuc(event: any) {
+    this.api.GetKhuVuc(this.FormAddNhanVien.value.Bophan).subscribe((res: any) => {
+      this.khuvucOption = res.listData;
+      console.log(this.khuvucOption);
+    });
+  }
+
   GetNhanVien() {
     var request = {
       PageIndex: this.PageIndex,
       PageSize: this.PageSize,
-      Keyword: ''
+      Code: this.SearchForm.value.code,
+      Hoten: this.SearchForm.value.hoten,
+      BoPhan: this.SearchForm.value.bophan
     };
     this.api.GetNhanVien(request).subscribe((res: any) => {
       this.listOfData = res.data.data;
@@ -100,22 +136,41 @@ export class QuanLyNhanVienComponent {
     this.GetNhanVien();
   }
 
-  modalAddNV(){
+  modalAddNV() {
     this.isVisible = true;
+    this.FormAddNhanVien.reset();
+    this.loadBoPhan();
   }
 
-  handleCancel(){
-    this.isVisible = false;
-    
-  }
-
-  handleOk(){
+  handleCancel() {
     this.isVisible = false;
 
   }
 
-  handleAdd(){
-    
+  handleOk() {
+    if (this.FormAddNhanVien.invalid) {
+      Object.values(this.FormAddNhanVien.controls).forEach(control => {
+        control.markAsTouched();
+        control.updateValueAndValidity();
+      });
+
+      return; 
+    }
+    this.api.CreateNhanVien(this.FormAddNhanVien.value).subscribe((res: any) => {
+        if (res.status == "SUCCESS") {
+          this.notification.success('Thành công', 'Thêm nhân viên thành công');
+          this.GetNhanVien();
+        }else if (res.status == "WARNING"){
+          this.notification.warning(res.status, res.message);
+        }else{
+          this.notification.error(res.status, res.message);
+        }
+      });
+    this.isVisible = false;
+  }
+
+  handleAdd() {
+
   }
 
 }

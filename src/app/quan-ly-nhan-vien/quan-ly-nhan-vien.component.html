@@ -1,26 +1,27 @@
 <div>
   <div class="search-box" style="display: flex; align-items: end; justify-content: space-between;">
-    <div style="display: flex; align-items: end;">
-      <div style="width: 250px;">
-        <label for="code" class="fw-600">Code</label>
-        <input nz-input placeholder="" id="code" formControlName="code" />
+    <form action="" [formGroup]="SearchForm">
+      <div style="display: flex; align-items: end;">
+        <div style="width: 250px;">
+          <label for="code" class="fw-600">Code</label>
+          <input nz-input placeholder="" id="code" formControlName="code" />
+        </div>
+        <div style="width: 250px;" class="ml-4">
+          <label for="name" class="fw-600">Họ tên1</label>
+          <input nz-input placeholder="" id="hoten" formControlName="hoten" />
+        </div>
+        <div style="width: 250px;" class="ml-4">
+          <label for="bophan" class="fw-600">Bộ phận</label>
+          <input nz-input placeholder="" id="bophan" formControlName="bophan" />
+        </div>
+        <button (click)="GetNhanVien()" class="ml-4" nz-button nzType="primary" nzShape="circle">
+          <span nz-icon nzType="search"></span>
+        </button>
       </div>
-      <div style="width: 250px;" class="ml-4">
-        <label for="name" class="fw-600">Họ tên</label>
-        <input nz-input placeholder="" id="name" formControlName="name" />
-      </div>
-      <div style="width: 250px;" class="ml-4">
-        <label for="bophan" class="fw-600">Bộ phận</label>
-        <input nz-input placeholder="" id="bophan" formControlName="bophan" />
-      </div>
-      <button (click)="GetNhanVien()" class="ml-4" nz-button nzType="primary" nzShape="circle">
-        <span nz-icon nzType="search"></span>
-      </button>
-    </div>
+    </form>
     <button (click)="modalAddNV()" nz-button nzType="default"
       style="background-color: var(--add-btn); color: white;width: 80px;"><span style="font-size: 20px;" nz-icon
         nzType="user-add"></span></button>
-
   </div>
 
   <div class="table-area mt-5">
@@ -69,15 +70,69 @@
 </div>
 <nz-modal [(nzVisible)]="isVisible" [nzTitle]="titleModal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="FormAddNhanVien">
+    <form action="" [formGroup]="FormAddNhanVien">
       <div>
         <div class="mb-4">
-          <label for="code" class="block mb-2 font-bold">Code</label>
-          <input id="code" nz-input placeholder="Code" formControlName="code" />
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Code</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập code">
+              <input id="code" nz-input placeholder="Code" formControlName="Code" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Họ tên</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập họ tên">
+              <input id="hoten" nz-input placeholder="Họ tên" formControlName="Hoten" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Mật khẩu</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu">
+              <input id="password" nz-input placeholder="Mật khẩu" formControlName="Password" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="mb-4">
+            <nz-form-item>
+              <nz-form-label [nzRequired]="true">Bộ phận</nz-form-label>
+              <nz-form-control nzErrorTip="Vui lòng chọn bộ phận">
+                <nz-select formControlName="Bophan" (nzOpenChange)="GetKhuVuc($event)">
+                  <nz-option *ngFor="let item of bophanOptions" [nzLabel]="item.tenPhongBan"
+                    [nzValue]="item.tenPhongBan">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div class="mb-4">
+            <nz-form-item>
+              <nz-form-label [nzRequired]="true">Khu vực</nz-form-label>
+              <nz-form-control nzErrorTip="Vui lòng chọn khu vực">
+                <nz-select formControlName="KhuVuc">
+                  <nz-option *ngFor="let item of khuvucOption" [nzLabel]="item.tenKhuVuc" [nzValue]="item.tenKhuVuc">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label>Ghi chú</nz-form-label>
+            <nz-form-control>
+              <input id="ghichu" nz-input placeholder="Ghi chú" formControlName="Ghichu" />
+            </nz-form-control>
+          </nz-form-item>
         </div>
       </div>
-
-      
     </form>
   </ng-container>
 </nz-modal>
