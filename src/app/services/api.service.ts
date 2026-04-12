@@ -37,5 +37,9 @@ export class ApiService {
   CreateNhanVien=(request: any)=>{
     return this.httpCLient.post(`${environment.api_domain}/NhanVien/create-nhan-vien`,request);
   }
+
+  DeleteNhanVien=(id: number)=>{
+    return this.httpCLient.delete(`${environment.api_domain}/NhanVien/delete-nhan-vien/${id}`);
+  }
   
 }

@@ -20,6 +20,10 @@ import { KhuVucResponseModal } from '../model/ResponseModel/KhuVucResponseModal'
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+
+
 const icons = [PlusOutline];
 @Component({
   selector: 'app-quan-ly-nhan-vien',
@@ -38,7 +42,8 @@ const icons = [PlusOutline];
     NzFormDirective,
     NzSelectModule,
     NzFormModule,
-    NzNotificationModule
+    NzNotificationModule,
+    NzPopconfirmModule
   ],
   templateUrl: './quan-ly-nhan-vien.component.html',
   styleUrl: './quan-ly-nhan-vien.component.scss',
@@ -88,14 +93,12 @@ export class QuanLyNhanVienComponent {
   loadBoPhan() {
     this.api.GetBoPhan().subscribe((res: any) => {
       this.bophanOptions = res.listData;
-      console.log(this.bophanOptions);
     });
   }
 
   GetKhuVuc(event: any) {
     this.api.GetKhuVuc(this.FormAddNhanVien.value.Bophan).subscribe((res: any) => {
       this.khuvucOption = res.listData;
-      console.log(this.khuvucOption);
     });
   }
 
@@ -109,7 +112,6 @@ export class QuanLyNhanVienComponent {
     };
     this.api.GetNhanVien(request).subscribe((res: any) => {
       this.listOfData = res.data.data;
-      console.log(this.listOfData);
       this.PageIndex = res.data.pageIndex;
       this.PageSize = res.data.pageSize;
       this.TotalRecords = res.data.totalRecords;
@@ -126,13 +128,11 @@ export class QuanLyNhanVienComponent {
 
   onPageIndexChange(pageIndex: number): void {
     this.PageIndex = pageIndex;
-    console.log('PageIndex:', pageIndex);
     this.GetNhanVien();
   }
 
   onPageSizeChange(pageSize: number): void {
     this.PageSize = pageSize;
-    console.log('PageSize:', pageSize);
     this.GetNhanVien();
   }
 
@@ -173,5 +173,25 @@ export class QuanLyNhanVienComponent {
 
   }
 
+  DeleteNhanVien(id: number) {
+    this.api.DeleteNhanVien(id).subscribe((res: any) => {
+      if (res.status == "SUCCESS") {
+        this.notification.success('Thành công', 'Xóa nhân viên thành công');
+        this.GetNhanVien();
+      } else {
+        this.notification.error(res.status, res.message);
+      }
+    });
+  }
+
+  cancel(){
+    this.notification.info('Hủy bỏ', 'Đã hủy bỏ thao tác');
+  }
+
+  EditNhanVien(data: NhanVienResponse){
+    console.log(data);
+    this.isVisible = true;
+    this.titleModal = 'Cập nhật nhân viên';
+  }
 }
 
