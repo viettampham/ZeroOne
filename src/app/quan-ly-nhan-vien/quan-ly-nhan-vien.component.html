@@ -7,7 +7,7 @@
           <input nz-input placeholder="" id="code" formControlName="code" />
         </div>
         <div style="width: 250px;" class="ml-4">
-          <label for="name" class="fw-600">Họ tên1</label>
+          <label for="name" class="fw-600">Họ tên</label>
           <input nz-input placeholder="" id="hoten" formControlName="hoten" />
         </div>
         <div style="width: 250px;" class="ml-4">
@@ -32,7 +32,8 @@
           <th>Code</th>
           <th>UserName</th>
           <th>IsActive</th>
-          <th>Bộ Phận</th>
+          <th>Bộ phận</th>
+          <th>Khu vực</th>
           <th>IsDelete</th>
           <th>Ghi chú</th>
           <th>Hành động</th>
@@ -45,6 +46,7 @@
           <td>{{ data.userName }}</td>
           <td>{{ data.isActive }}</td>
           <td>{{ data.boPhan }}</td>
+          <td>{{ data.khuVuc }}</td>
           <td>{{ data.isDelete }}</td>
           <td>{{ data.ghiChu }}</td>
           <td style="text-align:center;">
@@ -93,15 +95,6 @@
 
         <div class="mb-4">
           <nz-form-item>
-            <nz-form-label [nzRequired]="true">Mật khẩu</nz-form-label>
-            <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu">
-              <input id="password" nz-input placeholder="Mật khẩu" formControlName="Password" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-
-        <div class="mb-4">
-          <nz-form-item>
             <nz-form-label [nzRequired]="true">Bộ phận</nz-form-label>
             <nz-form-control nzErrorTip="Vui lòng chọn bộ phận">
               <nz-select formControlName="Bophan" (nzOpenChange)="GetKhuVuc($event)">
@@ -118,6 +111,18 @@
             <nz-form-control nzErrorTip="Vui lòng chọn khu vực">
               <nz-select formControlName="KhuVuc">
                 <nz-option *ngFor="let item of khuvucOption" [nzLabel]="item.tenKhuVuc" [nzValue]="item.tenKhuVuc">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Quyền</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn quyền truy cập">
+              <nz-select formControlName="role">
+                <nz-option *ngFor="let item of lstRole" [nzLabel]="item.role" [nzValue]="item.role">
                 </nz-option>
               </nz-select>
             </nz-form-control>

@@ -41,5 +41,13 @@ export class ApiService {
   DeleteNhanVien=(id: number)=>{
     return this.httpCLient.delete(`${environment.api_domain}/NhanVien/delete-nhan-vien/${id}`);
   }
+
+  GetNhanVienByID=(id: number)=>{
+    return this.httpCLient.get(`${environment.api_domain}/NhanVien/get-nhanvien-byid/${id}`);
+  }
+
+  UpdateNhanVien=(request: any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/NhanVien/update-nhan-vien`,request);
+  }
   
 }

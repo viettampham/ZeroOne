@@ -60,7 +60,6 @@ export class QuanLyNhanVienComponent {
     this.FormAddNhanVien = this.formBuilder.group({
       Code: ['', [Validators.required]],
       Hoten: ['', [Validators.required]],
-      Password: [null, [Validators.required]],
       Bophan: [null, [Validators.required]],
       KhuVuc: [null, [Validators.required]],
       Ghichu: ['']
@@ -80,6 +79,10 @@ export class QuanLyNhanVienComponent {
   PageIndex = 1;
   PageSize = 10;
   TotalRecords = 0;
+
+  action = ""; // hành động hiện tại: "add" hoặc "edit"
+  dataNhanVienEdit: NhanVienResponse | null = null; // lưu thông tin nhân viên đang được chỉnh sửa
+  
   rangeTemplate = (total: number) => {
     return `Total: ${total}`;
   };
@@ -97,7 +100,11 @@ export class QuanLyNhanVienComponent {
   }
 
   GetKhuVuc(event: any) {
-    this.api.GetKhuVuc(this.FormAddNhanVien.value.Bophan).subscribe((res: any) => {
+    this.GetKhuVucByBoPhan(this.FormAddNhanVien.value.Bophan);
+  }
+
+  GetKhuVucByBoPhan(bophan: string) {
+    this.api.GetKhuVuc(bophan).subscribe((res: any) => {
       this.khuvucOption = res.listData;
     });
   }
@@ -138,6 +145,7 @@ export class QuanLyNhanVienComponent {
 
   modalAddNV() {
     this.isVisible = true;
+    this.action = "add";
     this.FormAddNhanVien.reset();
     this.loadBoPhan();
   }
@@ -153,10 +161,10 @@ export class QuanLyNhanVienComponent {
         control.markAsTouched();
         control.updateValueAndValidity();
       });
-
       return; 
     }
-    this.api.CreateNhanVien(this.FormAddNhanVien.value).subscribe((res: any) => {
+    if(this.action == "add"){
+      this.api.CreateNhanVien(this.FormAddNhanVien.value).subscribe((res: any) => {
         if (res.status == "SUCCESS") {
           this.notification.success('Thành công', 'Thêm nhân viên thành công');
           this.GetNhanVien();
@@ -167,10 +175,28 @@ export class QuanLyNhanVienComponent {
         }
       });
     this.isVisible = false;
-  }
-
-  handleAdd() {
-
+    }else if(this.action == "edit"){
+      var request = {
+        id: this.dataNhanVienEdit?.id,
+        code: this.FormAddNhanVien.value.Code,
+        userName: this.FormAddNhanVien.value.Hoten,
+        boPhan: this.FormAddNhanVien.value.Bophan,
+        khuVuc: this.FormAddNhanVien.value.KhuVuc,
+        ghiChu: this.FormAddNhanVien.value.Ghichu,
+        isActive: this.dataNhanVienEdit?.isActive,
+      };
+      this.api.UpdateNhanVien(request).subscribe((res: any) => {
+        if (res.status == "SUCCESS") {
+          this.isVisible = false;
+          this.notification.success('Thành công', 'Cập nhật nhân viên thành công');
+          this.GetNhanVien();
+        } else if (res.status == "WARNING") {
+          this.notification.warning(res.status, res.message);
+        } else {
+          this.notification.error(res.status, res.message);
+        }
+      });
+    }
   }
 
   DeleteNhanVien(id: number) {
@@ -189,9 +215,26 @@ export class QuanLyNhanVienComponent {
   }
 
   EditNhanVien(data: NhanVienResponse){
-    console.log(data);
+    this.dataNhanVienEdit = data;
+    this.action = "edit";
     this.isVisible = true;
     this.titleModal = 'Cập nhật nhân viên';
+    this.loadBoPhan();
+
+    this.FormAddNhanVien.patchValue({
+      Code: data.code,
+      Hoten: data.userName,
+      Bophan: data.boPhan,
+      PhongBan: data.boPhan,
+      Ghichu: data.ghiChu,
+      // KhuVuc: data.khuVuc
+    });
+    
+    this.GetKhuVucByBoPhan(data.boPhan);
+
+    this.FormAddNhanVien.patchValue({
+        KhuVuc: data.khuVuc
+      });
   }
 }
 
