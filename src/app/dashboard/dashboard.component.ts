@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
@@ -10,8 +10,10 @@ import { Router, RouterModule } from '@angular/router';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { UserAddOutline } from '@ant-design/icons-angular/icons';
 import { CommonModule } from '@angular/common';
-
+import { jwtDecode } from 'jwt-decode';
+import { decode } from 'punycode';
 const icons = [UserAddOutline];
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -34,8 +36,17 @@ const icons = [UserAddOutline];
 export class DashboardComponent {
   isCollapsed = false;
   currentYear = new Date().getFullYear();
+  currentUser: any = null;
+  constructor(private feather: FeatherService, private router: Router) { }
 
-  constructor(private feather: FeatherService, private router: Router) {}
+  ngOnInit(): void {
+    console.log('DashboardComponent initialized');
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.currentUser = decoded;
+    }
+  }
 
   ngAfterViewInit(): void {
     this.feather.replace();
@@ -48,9 +59,9 @@ export class DashboardComponent {
     this.breadcrumbs = [x1, x2,];
   }
 
-  navigateTo(page: string, x1: string, x2:string){
-    this.changeBreadcrumb(x1,x2);
-    switch(page){
+  navigateTo(page: string, x1: string, x2: string) {
+    this.changeBreadcrumb(x1, x2);
+    switch (page) {
       case 'QuanLyNhanVien':
         this.router.navigate(['/dashboard/quanlynhanvien']);
         break;

@@ -59,6 +59,10 @@
               style="background-color: var(--delete-btn);color: white; font-size:16px; cursor: pointer;">
               <span style="color: white; font-size:16px; cursor: pointer;" nz-icon nzType="delete"></span>
             </button>
+            <button (click)="EditNhanVien(data)" nz-button nzType="default"
+              style="background-color: #ed871b;color: white; font-size:16px; cursor: pointer;">
+              <span nz-icon nzType="setting"></span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -121,8 +125,8 @@
           <nz-form-item>
             <nz-form-label [nzRequired]="true">Quyền</nz-form-label>
             <nz-form-control nzErrorTip="Vui lòng chọn quyền truy cập">
-              <nz-select formControlName="role">
-                <nz-option *ngFor="let item of lstRole" [nzLabel]="item.role" [nzValue]="item.role">
+              <nz-select formControlName="Role">
+                <nz-option *ngFor="let item of lstRole" [nzLabel]="item.capBac" [nzValue]="item.quyen">
                 </nz-option>
               </nz-select>
             </nz-form-control>

@@ -26,6 +26,7 @@
     "angular-feather": "^6.5.1",
     "express": "^4.18.2",
     "feather-icons": "^4.29.2",
+    "jwt-decode": "^4.0.0",
     "ng-zorro-antd": "^17.4.1",
     "primeicons": "^7.0.0",
     "rxjs": "~7.8.0",

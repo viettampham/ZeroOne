@@ -35,7 +35,7 @@
       </span>
 
       <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" style="display: flex;justify-content: center;align-items: center;">
-        <span style="background-color: #bababa;width: 40px;height: 38px;display: flex;justify-content: center;align-items: center;font-size: 20px;border-radius: 100%;"><span nz-icon nzType="user"></span></span>PHẠM VIẾT TÂM
+        <span style="background-color: #bababa;width: 40px;height: 38px;display: flex;justify-content: center;align-items: center;font-size: 20px;border-radius: 100%;"><span nz-icon nzType="user"></span></span><SPAN>{{ currentUser?.UserName }}</SPAN>
         <span nz-icon nzType="down"></span>
       </a>
       <nz-dropdown-menu #menu="nzDropdownMenu">

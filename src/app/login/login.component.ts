@@ -41,8 +41,8 @@ export class LoginComponent {
     private apiService: ApiService
   ) {
     this.LoginForm = this.formBuilder.group({
-      code: [null, [Validators.required, Validators.minLength(3)]],
-      password: [null, [Validators.required, Validators.minLength(6)]],
+      code: [null, [Validators.required, Validators.minLength(1)]],
+      password: [null, [Validators.required, Validators.minLength(1)]],
     });
   }
 

@@ -8,6 +8,7 @@ import { NhanVienResponse } from '../model/ResponseModel/NhanVienResponse';
 import { GetNhanVienRequest } from '../model/RequestModel/GetNhanVienRequest';
 import { PagingResponse } from '../model/ResponseModel/PagingResponse';
 import { BoPhanResponseModal } from '../model/ResponseModel/BoPhanResponseModal';
+import { RoleResponseModel } from '../model/ResponseModel/RoleResponseModel';
 
 
 
@@ -49,5 +50,10 @@ export class ApiService {
   UpdateNhanVien=(request: any)=>{
     return this.httpCLient.post(`${environment.api_domain}/NhanVien/update-nhan-vien`,request);
   }
+
+  GetRole=()=>{
+    return this.httpCLient.get<CommonResponseModal<RoleResponseModel[]>>(`${environment.api_domain}/NhanVien/get-role`);
+  }
+  
   
 }

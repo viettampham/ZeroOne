@@ -22,6 +22,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { RoleResponseModel } from '../model/ResponseModel/RoleResponseModel';
 
 
 const icons = [PlusOutline];
@@ -56,12 +57,14 @@ export class QuanLyNhanVienComponent {
   SearchForm: FormGroup;
   bophanOptions: BoPhanResponseModal[] = [];
   khuvucOption: KhuVucResponseModal[] = [];
+  lstRole: RoleResponseModel[] = [];
   constructor(private api: ApiService, private formBuilder: FormBuilder, private notification: NzNotificationService) {
     this.FormAddNhanVien = this.formBuilder.group({
       Code: ['', [Validators.required]],
       Hoten: ['', [Validators.required]],
       Bophan: [null, [Validators.required]],
       KhuVuc: [null, [Validators.required]],
+      Role: [null, [Validators.required]],
       Ghichu: ['']
     });
 
@@ -148,6 +151,15 @@ export class QuanLyNhanVienComponent {
     this.action = "add";
     this.FormAddNhanVien.reset();
     this.loadBoPhan();
+    this.loadRoles();
+  }
+
+  loadRoles(){
+    console.log("123");
+    this.api.GetRole().subscribe((res: any) => {
+      this.lstRole = res.listData;
+      console.log(this.lstRole);
+    });
   }
 
   handleCancel() {
@@ -182,6 +194,7 @@ export class QuanLyNhanVienComponent {
         userName: this.FormAddNhanVien.value.Hoten,
         boPhan: this.FormAddNhanVien.value.Bophan,
         khuVuc: this.FormAddNhanVien.value.KhuVuc,
+        role: this.FormAddNhanVien.value.Role,
         ghiChu: this.FormAddNhanVien.value.Ghichu,
         isActive: this.dataNhanVienEdit?.isActive,
       };
@@ -220,6 +233,7 @@ export class QuanLyNhanVienComponent {
     this.isVisible = true;
     this.titleModal = 'Cập nhật nhân viên';
     this.loadBoPhan();
+    this.loadRoles();
 
     this.FormAddNhanVien.patchValue({
       Code: data.code,
@@ -227,6 +241,7 @@ export class QuanLyNhanVienComponent {
       Bophan: data.boPhan,
       PhongBan: data.boPhan,
       Ghichu: data.ghiChu,
+      Role: data.role,
       // KhuVuc: data.khuVuc
     });
     

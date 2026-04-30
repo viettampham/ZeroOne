@@ -7,7 +7,8 @@ export class NhanVienResponse {
     boPhan: string;
     ghiChu: string;
     khuVuc: string;
-    constructor(Id: number, Code: string, UserName: string, IsActive: boolean, GhiChu: string, BoPhan: string, IsDelete: boolean,  KhuVuc: string) {
+    role: number;
+    constructor(Id: number, Code: string, UserName: string, IsActive: boolean, GhiChu: string, BoPhan: string, IsDelete: boolean,  KhuVuc: string, Role: number) {
         this.id = Id;
         this.code = Code;
         this.userName = UserName;
@@ -16,5 +17,6 @@ export class NhanVienResponse {
         this.boPhan = BoPhan;
         this.isDelete = IsDelete;
         this.khuVuc = KhuVuc;
+        this.role = Role;
     }
 }

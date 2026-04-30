@@ -6,6 +6,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNzI18n, vi_VN } from 'ng-zorro-antd/i18n';
 import { provideHttpClient } from '@angular/common/http';
+
+import { withInterceptors,withFetch  } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
+
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   DashboardOutline,
@@ -14,7 +18,8 @@ import {
   FileOutline,
   DownOutline,
   PlusOutline,
-  UserAddOutline
+  UserAddOutline,
+  SettingOutline
 } from '@ant-design/icons-angular/icons';
 
 export const appConfig: ApplicationConfig = {
@@ -30,8 +35,12 @@ export const appConfig: ApplicationConfig = {
       FileOutline,
       DownOutline,
       PlusOutline,
-      UserAddOutline
+      UserAddOutline,
+      SettingOutline
     ])),
-    provideHttpClient()
+    provideHttpClient(
+      withFetch(), 
+      withInterceptors([authInterceptor])
+    )
   ]
 };
