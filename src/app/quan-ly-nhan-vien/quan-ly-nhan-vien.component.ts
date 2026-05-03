@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -23,6 +23,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { RoleResponseModel } from '../model/ResponseModel/RoleResponseModel';
+import { UserService } from '../services/currentUser.service';
 
 
 const icons = [PlusOutline];
@@ -53,12 +54,20 @@ const icons = [PlusOutline];
   ]
 })
 export class QuanLyNhanVienComponent {
+  @Input() data: string = '';
   FormAddNhanVien: FormGroup;
+  FormChangePassword: FormGroup;
+  isVisibleChangePassword: boolean = false;
   SearchForm: FormGroup;
   bophanOptions: BoPhanResponseModal[] = [];
   khuvucOption: KhuVucResponseModal[] = [];
   lstRole: RoleResponseModel[] = [];
-  constructor(private api: ApiService, private formBuilder: FormBuilder, private notification: NzNotificationService) {
+  CurrentUser: any;
+  constructor(
+    private api: ApiService,
+    private formBuilder: FormBuilder,
+    private notification: NzNotificationService,
+    private userService: UserService) {
     this.FormAddNhanVien = this.formBuilder.group({
       Code: ['', [Validators.required]],
       Hoten: ['', [Validators.required]],
@@ -66,6 +75,11 @@ export class QuanLyNhanVienComponent {
       KhuVuc: [null, [Validators.required]],
       Role: [null, [Validators.required]],
       Ghichu: ['']
+    });
+
+    this.FormChangePassword = this.formBuilder.group({
+      code: ['', [Validators.required]],
+      newPass: ['', [Validators.required]],
     });
 
     this.SearchForm = this.formBuilder.group({
@@ -85,7 +99,7 @@ export class QuanLyNhanVienComponent {
 
   action = ""; // hành động hiện tại: "add" hoặc "edit"
   dataNhanVienEdit: NhanVienResponse | null = null; // lưu thông tin nhân viên đang được chỉnh sửa
-  
+
   rangeTemplate = (total: number) => {
     return `Total: ${total}`;
   };
@@ -93,6 +107,12 @@ export class QuanLyNhanVienComponent {
   listOfData: NhanVienResponse[] = [];
 
   ngOnInit(): void {
+    this.userService.user$.subscribe(user => {
+      this.data = user;
+      this.CurrentUser = user;
+      this.loadBoPhan();
+    });
+
     this.GetNhanVien();
   }
 
@@ -103,12 +123,16 @@ export class QuanLyNhanVienComponent {
   }
 
   GetKhuVuc(event: any) {
-    this.GetKhuVucByBoPhan(this.FormAddNhanVien.value.Bophan);
+    this.GetKhuVucByBoPhan(this.FormAddNhanVien.value.Bophan, "");
   }
 
-  GetKhuVucByBoPhan(bophan: string) {
+  GetKhuVucByBoPhan(bophan: string, khuVuc: string) {
+    this.khuvucOption = [];
     this.api.GetKhuVuc(bophan).subscribe((res: any) => {
       this.khuvucOption = res.listData;
+      this.FormAddNhanVien.patchValue({
+        KhuVuc: khuVuc
+      });
     });
   }
 
@@ -154,17 +178,14 @@ export class QuanLyNhanVienComponent {
     this.loadRoles();
   }
 
-  loadRoles(){
-    console.log("123");
+  loadRoles() {
     this.api.GetRole().subscribe((res: any) => {
       this.lstRole = res.listData;
-      console.log(this.lstRole);
     });
   }
 
   handleCancel() {
     this.isVisible = false;
-
   }
 
   handleOk() {
@@ -173,21 +194,21 @@ export class QuanLyNhanVienComponent {
         control.markAsTouched();
         control.updateValueAndValidity();
       });
-      return; 
+      return;
     }
-    if(this.action == "add"){
+    if (this.action == "add") {
       this.api.CreateNhanVien(this.FormAddNhanVien.value).subscribe((res: any) => {
         if (res.status == "SUCCESS") {
           this.notification.success('Thành công', 'Thêm nhân viên thành công');
           this.GetNhanVien();
-        }else if (res.status == "WARNING"){
+        } else if (res.status == "WARNING") {
           this.notification.warning(res.status, res.message);
-        }else{
+        } else {
           this.notification.error(res.status, res.message);
         }
       });
-    this.isVisible = false;
-    }else if(this.action == "edit"){
+      this.isVisible = false;
+    } else if (this.action == "edit") {
       var request = {
         id: this.dataNhanVienEdit?.id,
         code: this.FormAddNhanVien.value.Code,
@@ -223,12 +244,13 @@ export class QuanLyNhanVienComponent {
     });
   }
 
-  cancel(){
+  cancel() {
     this.notification.info('Hủy bỏ', 'Đã hủy bỏ thao tác');
   }
 
-  EditNhanVien(data: NhanVienResponse){
+  EditNhanVien(data: NhanVienResponse) {
     this.dataNhanVienEdit = data;
+    console.log(data);
     this.action = "edit";
     this.isVisible = true;
     this.titleModal = 'Cập nhật nhân viên';
@@ -244,12 +266,39 @@ export class QuanLyNhanVienComponent {
       Role: data.role,
       // KhuVuc: data.khuVuc
     });
-    
-    this.GetKhuVucByBoPhan(data.boPhan);
+
+    this.GetKhuVucByBoPhan(data.boPhan, data.khuVuc);
 
     this.FormAddNhanVien.patchValue({
-        KhuVuc: data.khuVuc
-      });
+      KhuVuc: data.khuVuc
+    });
+  }
+
+  OpenChangePassword(data: NhanVienResponse) {
+    this.isVisibleChangePassword = true;
+    this.FormChangePassword.reset();
+
+    this.FormChangePassword.patchValue({
+      code: data.code
+    });
+  }
+
+  handleClose() {
+    this.isVisibleChangePassword = false;
+  }
+
+  handleChangePassword() {
+    console.log(this.FormChangePassword.value);
+    this.api.ChangePassword(this.FormChangePassword.value).subscribe((res: any) => {
+      if (res.status == "SUCCESS") {
+        this.notification.success('Thành công', 'Đổi mật khẩu thành công');
+        this.isVisibleChangePassword = false;
+      } else if (res.status == "WARNING") {
+        this.notification.warning(res.status, res.message);
+      } else {
+        this.notification.error(res.status, res.message);
+      }
+    });
   }
 }
 

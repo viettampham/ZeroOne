@@ -4,15 +4,20 @@
       <div style="display: flex; align-items: end;">
         <div style="width: 250px;">
           <label for="code" class="fw-600">Code</label>
-          <input nz-input placeholder="" id="code" formControlName="code" />
+          <input nz-input placeholder="" id="code" autocomplete="off" formControlName="code" />
         </div>
         <div style="width: 250px;" class="ml-4">
           <label for="name" class="fw-600">Họ tên</label>
-          <input nz-input placeholder="" id="hoten" formControlName="hoten" />
+          <input nz-input placeholder="" id="hoten" autocomplete="off" formControlName="hoten" />
         </div>
         <div style="width: 250px;" class="ml-4">
           <label for="bophan" class="fw-600">Bộ phận</label>
-          <input nz-input placeholder="" id="bophan" formControlName="bophan" />
+          <div>
+            <nz-select formControlName="bophan"  (nzOpenChange)="GetNhanVien()" style="width: 250px;">
+              <nz-option nzValue="" nzLabel="-- Chọn bộ phận --" />
+              <nz-option *ngFor="let item of bophanOptions" [nzValue]="item.tenPhongBan" [nzLabel]="item.tenPhongBan" />
+            </nz-select>
+          </div>
         </div>
         <button (click)="GetNhanVien()" class="ml-4" nz-button nzType="primary" nzShape="circle">
           <span nz-icon nzType="search"></span>
@@ -59,7 +64,7 @@
               style="background-color: var(--delete-btn);color: white; font-size:16px; cursor: pointer;">
               <span style="color: white; font-size:16px; cursor: pointer;" nz-icon nzType="delete"></span>
             </button>
-            <button (click)="EditNhanVien(data)" nz-button nzType="default"
+            <button *ngIf="CurrentUser?.CapBacRole == '1'" (click)="OpenChangePassword(data)" nz-button nzType="default"
               style="background-color: #ed871b;color: white; font-size:16px; cursor: pointer;">
               <span nz-icon nzType="setting"></span>
             </button>
@@ -102,6 +107,7 @@
             <nz-form-label [nzRequired]="true">Bộ phận</nz-form-label>
             <nz-form-control nzErrorTip="Vui lòng chọn bộ phận">
               <nz-select formControlName="Bophan" (nzOpenChange)="GetKhuVuc($event)">
+                <nz-option nzValue="" nzLabel="-- Chọn bộ phận --" />
                 <nz-option *ngFor="let item of bophanOptions" [nzLabel]="item.tenPhongBan" [nzValue]="item.tenPhongBan">
                 </nz-option>
               </nz-select>
@@ -114,6 +120,7 @@
             <nz-form-label [nzRequired]="true">Khu vực</nz-form-label>
             <nz-form-control nzErrorTip="Vui lòng chọn khu vực">
               <nz-select formControlName="KhuVuc">
+                <nz-option nzValue="" nzLabel="-- Chọn khu vực --" />
                 <nz-option *ngFor="let item of khuvucOption" [nzLabel]="item.tenKhuVuc" [nzValue]="item.tenKhuVuc">
                 </nz-option>
               </nz-select>
@@ -138,6 +145,32 @@
             <nz-form-label>Ghi chú</nz-form-label>
             <nz-form-control>
               <input id="ghichu" nz-input placeholder="Ghi chú" formControlName="Ghichu" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isVisibleChangePassword" nzTitle="Đổi mật khẩu" (nzOnCancel)="handleClose()"
+  (nzOnOk)="handleChangePassword()">
+  <ng-container *nzModalContent>
+    <form action="" [formGroup]="FormChangePassword">
+      <div>
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Code</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập code">
+              <input id="code" nz-input placeholder="Code" formControlName="code" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Password</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu mới">
+              <input nz-input placeholder="New Password" formControlName="newPass" />
             </nz-form-control>
           </nz-form-item>
         </div>

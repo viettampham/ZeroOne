@@ -1,4 +1,4 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
@@ -12,6 +12,7 @@ import { UserAddOutline } from '@ant-design/icons-angular/icons';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { decode } from 'punycode';
+import { UserService } from '../services/currentUser.service';
 const icons = [UserAddOutline];
 
 @Component({
@@ -37,7 +38,7 @@ export class DashboardComponent {
   isCollapsed = false;
   currentYear = new Date().getFullYear();
   currentUser: any = null;
-  constructor(private feather: FeatherService, private router: Router) { }
+  constructor(private feather: FeatherService, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
     console.log('DashboardComponent initialized');
@@ -45,6 +46,8 @@ export class DashboardComponent {
     if (token) {
       const decoded: any = jwtDecode(token);
       this.currentUser = decoded;
+      console.log(this.currentUser);
+      this.userService.setUser(this.currentUser);
     }
   }
 
@@ -64,6 +67,9 @@ export class DashboardComponent {
     switch (page) {
       case 'QuanLyNhanVien':
         this.router.navigate(['/dashboard/quanlynhanvien']);
+        break;
+      case 'QuanLyModel':
+        this.router.navigate(['/dashboard/quanlymodel']);
         break;
       default:
         break;

@@ -70,7 +70,11 @@ export class LoginComponent {
           sessionStorage.setItem('token', res.data);
           this.router.navigate(['/dashboard']);
         }else{
-          alert("Đăng nhập thất bại, vui lòng kiểm tra lại thông tin đăng nhập!");
+          this.notification.warning(
+        'Thông báo',
+        'Tên đăng nhập hoặc mật khẩu không đúng!',
+        { nzDuration: 3000 }
+      );
         }
       });
       

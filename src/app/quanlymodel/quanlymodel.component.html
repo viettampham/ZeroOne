@@ -1,0 +1,59 @@
+<div class="">
+    <div class="search-box" style="display: flex; align-items: end; justify-content: space-between;">
+    <form action="" [formGroup]="SearchForm">
+      <div style="display: flex; align-items: end;">
+        <div style="width: 250px;">
+          <label for="model" class="fw-600">Model</label>
+          <input nz-input placeholder="" id="model" autocomplete="off" formControlName="model" />
+        </div>
+        <button (click)="GetModel()" class="ml-4" nz-button nzType="primary" nzShape="circle">
+          <span nz-icon nzType="search"></span>
+        </button>
+      </div>
+    </form>
+    <button (click)="modalAddModel()" nz-button nzType="default"
+      style="background-color: var(--add-btn); color: white;width: 80px;"><span style="font-size: 20px;" nz-icon
+        nzType="user-add"></span></button>
+  </div>
+
+  <div class="table-area mt-5">
+    <nz-table style="height: 394px;overflow: auto;" [nzFrontPagination]="false" ngSkipHydration [nzData]="listOfData">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Item</th>
+          <th>Tên Model</th>
+          <th>Loại Model</th>
+          <th>KHSX FIle Name</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{ data.id }}</td>
+          <td>{{ data.item }}</td>
+          <td>{{ data.tenModel }}</td>
+          <td>{{ data.loaiModel }}</td>
+          <td>{{ data.khsxFileName }}</td>
+          <td style="text-align:center;">
+            <button (click)="EditModel(data)" nz-button nzType="default"
+              style="background-color: var(--edit-btn);color: white; font-size:16px; cursor: pointer;">
+              <span nz-icon nzType="edit"></span>
+            </button>
+            <button nz-popconfirm nzPopconfirmTitle="Are you sure?" nzOkText="OK" nzCancelText="Cancel"
+              (nzOnConfirm)="DeleteModel(data.id)" (nzOnCancel)="cancel()" nz-button nzType="default"
+              style="background-color: var(--delete-btn);color: white; font-size:16px; cursor: pointer;">
+              <span style="color: white; font-size:16px; cursor: pointer;" nz-icon nzType="delete"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination [nzResponsive]="true" [nzShowTotal]="totalTpl" [nzPageSizeOptions]="[10, 20, 50, 100]"
+      (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
+      [nzPageIndex]="PageIndex" [nzTotal]="TotalRecords" nzShowSizeChanger [nzPageSize]="PageSize" />
+    <ng-template #totalTpl let-total let-range="range">
+      {{ range[0] }}-{{ range[1] }} / Tổng {{ total }} bản ghi
+    </ng-template>
+  </div>
+</div>

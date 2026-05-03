@@ -9,13 +9,13 @@
                 <div class="loginForm mt-8">
                     <div>
                         <p class="text-base font-bold">Tên đăng nhập</p>
-                        <input id="code" nz-input placeholder="Tên đăng nhập" formControlName="code"
+                        <input id="code" autocomplete="off" nz-input placeholder="Tên đăng nhập" formControlName="code"
                             type="text" />
                     </div>
                     <div class="mt-3">
                         <p class="text-base font-bold">Mật khẩu</p>
                         <div class="relative">
-                            <input id="password" nz-input placeholder="Mật khẩu" formControlName="password"
+                            <input id="password" autocomplete="off" nz-input placeholder="Mật khẩu" formControlName="password"
                                 [type]="typepwd" />
                             <i-feather *ngIf="!showpwd" style="position: absolute; top: 3px; right: 8px; padding: 3px;"
                                 (click)="OnChangeTypePassword()" name="eye"></i-feather>
