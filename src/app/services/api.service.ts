@@ -63,5 +63,17 @@ export class ApiService {
   GetDSModel=(req:any)=>{
     return this.httpCLient.post<CommonResponseModal<PagingResponse<ModelResponseModal>>>(`${environment.api_domain}/Model/get-model`,req);
   }
+
+  CreateModel=(req:any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/Model/create-model`,req);
+  }
+
+  DeleteModel=(id: number)=>{
+    return this.httpCLient.delete(`${environment.api_domain}/Model/delete?id=${id}`);
+  }
   
+  UpdateModel=(req: any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/Model/update-model`,req);
+  }
+
 }

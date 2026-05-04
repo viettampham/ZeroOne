@@ -13,7 +13,7 @@
     </form>
     <button (click)="modalAddModel()" nz-button nzType="default"
       style="background-color: var(--add-btn); color: white;width: 80px;"><span style="font-size: 20px;" nz-icon
-        nzType="user-add"></span></button>
+        nzType="plus-square"></span></button>
   </div>
 
   <div class="table-area mt-5">
@@ -57,3 +57,36 @@
     </ng-template>
   </div>
 </div>
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="titleModal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form action="" [formGroup]="FormAddModel">
+      <div>
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Item</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập item">
+              <input id="item" nz-input placeholder="Item" formControlName="item" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Model</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập model">
+              <input id="model" nz-input placeholder="Model" formControlName="model" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Loại Model</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập loại model">
+              <input id="loaimodel" nz-input placeholder="Loại Model" formControlName="loaiModel" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

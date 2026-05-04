@@ -25,6 +25,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { RoleResponseModel } from '../model/ResponseModel/RoleResponseModel';
 import { UserService } from '../services/currentUser.service';
 import { ModelResponseModal } from '../model/ResponseModel/ModelResponseModal';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-quanlymodel',
@@ -56,10 +57,19 @@ export class QuanlymodelComponent {
   PageSize = 10;
   TotalRecords = 0;
   listOfData: ModelResponseModal[] = [];
+  titleModal = "";
+  FormAddModel: FormGroup;
+  dataModel: ModelResponseModal | null = null;
 
   constructor(private fb: FormBuilder, private api: ApiService, private notification: NzNotificationService,) {
     this.SearchForm = this.fb.group({
       model: "",
+    });
+
+    this.FormAddModel = this.fb.group({
+      item: ["", Validators.required],
+      model: ["", Validators.required],
+      loaiModel: ["", Validators.required],
     });
   }
 
@@ -73,7 +83,7 @@ export class QuanlymodelComponent {
       pageIndex: this.PageIndex,
       pageSize: this.PageSize
     }
-    this.api.GetDSModel(request).subscribe((res:any) => {
+    this.api.GetDSModel(request).subscribe((res: any) => {
       console.log(res);
       this.listOfData = res.data.data;
       this.PageIndex = res.data.pageIndex;
@@ -101,15 +111,74 @@ export class QuanlymodelComponent {
   }
 
   modalAddModel() {
-
-
+    this.isVisible = true;
+    this.titleModal = "Thêm mới Model";
+    this.FormAddModel.reset();
   }
 
   EditModel(data: ModelResponseModal) {
-
+    this.isVisible = true;
+    this.titleModal = "Cập nhật Model";
+    this.dataModel = data;
+    this.FormAddModel.patchValue({
+      item: data.item,
+      model: data.tenModel,
+      loaiModel: data.loaiModel
+    });
   }
 
   DeleteModel(id: number) {
+    this.api.DeleteModel(id).subscribe((res: any) => {
+      if (res.status == "SUCCESS") {
+        this.notification.success('Thành công', 'Xóa model thành công');
+        this.GetModel();
+      } else if (res.status == "WARNING") {
+        this.notification.warning('Thất bại', res.message);
+      } else {
+        this.notification.error('Thất bại', 'Xóa model thất bại');
+      }
+    });
+  }
 
+  handleOk() {
+    if (this.FormAddModel.invalid) {
+      Object.values(this.FormAddModel.controls).forEach(control => {
+        control.markAsTouched();
+        control.updateValueAndValidity();
+      });
+      return;
+    }
+    if (this.titleModal == "Thêm mới Model") {
+      this.api.CreateModel(this.FormAddModel.value).subscribe((res: any) => {
+        if (res.status == "SUCCESS") {
+          this.notification.success('Thành công', 'Thêm model thành công');
+          this.isVisible = false;
+          this.GetModel();
+        } else if (res.status == "WARNING") {
+          this.notification.warning('Thất bại', res.message);
+        } else {
+          this.notification.error('Thất bại', 'Thêm model thất bại');
+        }
+      })
+
+    } else if (this.titleModal == "Cập nhật Model") {
+      var request = {
+        id: this.dataModel?.id,
+        item: this.FormAddModel.value.item,
+        model: this.FormAddModel.value.model,
+        loaiModel: this.FormAddModel.value.loaiModel
+      };
+      this.api.UpdateModel(request).subscribe((res: any) => {
+        if (res.status == "SUCCESS") {
+          this.notification.success('Thành công', 'Cập nhật model thành công');
+          this.isVisible = false;
+          this.GetModel();
+        } else if (res.status == "WARNING") {
+          this.notification.warning('Thất bại', res.message);
+        } else {
+          this.notification.error('Thất bại', 'Cập nhật model thất bại');
+        }
+      });
+    }
   }
 }

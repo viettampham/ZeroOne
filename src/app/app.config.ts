@@ -19,7 +19,8 @@ import {
   DownOutline,
   PlusOutline,
   UserAddOutline,
-  SettingOutline
+  SettingOutline,
+  PlusSquareOutline
 } from '@ant-design/icons-angular/icons';
 
 export const appConfig: ApplicationConfig = {
@@ -36,7 +37,8 @@ export const appConfig: ApplicationConfig = {
       DownOutline,
       PlusOutline,
       UserAddOutline,
-      SettingOutline
+      SettingOutline,
+      PlusSquareOutline
     ])),
     provideHttpClient(
       withFetch(), 
