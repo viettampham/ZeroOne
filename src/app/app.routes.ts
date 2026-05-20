@@ -3,6 +3,8 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { QuanLyNhanVienComponent } from './quan-ly-nhan-vien/quan-ly-nhan-vien.component';
 import { QuanlymodelComponent } from './quanlymodel/quanlymodel.component';
+import { QuanLyCongDoanComponent } from './quan-ly-cong-doan/quan-ly-cong-doan.component';
+import { QuanLyMayComponent } from './quan-ly-may/quan-ly-may.component';
 
 export const routes: Routes = [
     //{path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
@@ -13,6 +15,8 @@ export const routes: Routes = [
         children: [
             { path: 'quanlynhanvien', component: QuanLyNhanVienComponent },
             { path: 'quanlymodel', component: QuanlymodelComponent },
+            { path: 'quanlycongdoan', component: QuanLyCongDoanComponent },
+            { path: 'quanlymay', component: QuanLyMayComponent },
         ],
     },
 ];

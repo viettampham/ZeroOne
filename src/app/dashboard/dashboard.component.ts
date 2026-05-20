@@ -41,12 +41,12 @@ export class DashboardComponent {
   constructor(private feather: FeatherService, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
-    console.log('DashboardComponent initialized');
+    //console.log('DashboardComponent initialized');
     const token = sessionStorage.getItem('token');
     if (token) {
       const decoded: any = jwtDecode(token);
       this.currentUser = decoded;
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
       this.userService.setUser(this.currentUser);
     }
   }
@@ -70,6 +70,15 @@ export class DashboardComponent {
         break;
       case 'QuanLyModel':
         this.router.navigate(['/dashboard/quanlymodel']);
+        break;
+      case 'QuanLyMay':
+        this.router.navigate(['/dashboard/quanlymay']);
+        break;
+      case 'QuanLyChecksheet':
+        this.router.navigate(['/dashboard/quanlychecksheet']);
+        break;
+      case 'QuanLyCongDoan':
+        this.router.navigate(['/dashboard/quanlycongdoan']);
         break;
       default:
         break;

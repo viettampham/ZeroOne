@@ -1,0 +1,80 @@
+<div>
+    <div class="search-box" style="display: flex; align-items: end; justify-content: space-between;">
+    <form action="" [formGroup]="SearchForm">
+      <div style="display: flex; align-items: end;">
+        <div style="width: 250px; margin-left: 10px;">
+          <label for="tenmay" class="fw-600">Tên máy</label>
+          <input nz-input placeholder="" id="tenmay" autocomplete="off" formControlName="tenMay" />
+        </div>
+
+        <div style="width: 250px;" class="ml-4">
+          <label for="bophan" class="fw-600">Công đoạn</label>
+          <div>
+            <nz-select formControlName="tenCongDoan"  (nzOpenChange)="GetMDSMay()" style="width: 250px;">
+              <nz-option nzValue="" nzLabel="-- Chọn công đoạn --" />
+              <nz-option *ngFor="let item of congdoanOption" [nzValue]="item.tenCongDoan" [nzLabel]="item.tenCongDoan" />
+            </nz-select>
+          </div>
+        </div>
+        
+        <div style="width: 250px;" class="ml-4">
+          <label for="khuVuc" class="fw-600">Khu vực</label>
+          <div>
+            <nz-select formControlName="khuVuc" (nzOpenChange)="GetCongDoan()" style="width: 250px;">
+              <nz-option nzValue="" nzLabel="-- Chọn khu vực --" />
+              <nz-option *ngFor="let item of khuvucOption" [nzValue]="item.tenKhuVuc" [nzLabel]="item.tenKhuVuc" />
+            </nz-select>
+          </div>
+        </div>
+
+        <button (click)="GetMDSMay()" class="ml-4" nz-button nzType="primary" nzShape="circle">
+          <span nz-icon nzType="search"></span>
+        </button>
+      </div>
+    </form>
+    <button (click)="modalAddMay()" nz-button nzType="default"
+      style="background-color: var(--add-btn); color: white;width: 80px;"><span style="font-size: 20px;" nz-icon
+        nzType="plus-circle"></span></button>
+  </div>
+  
+  <div class="table-area mt-5">
+    <nz-table style="height: 394px;overflow: auto;" [nzFrontPagination]="false" ngSkipHydration [nzData]="listOfData">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên máy</th>
+          <th>Tên công đoạn</th>
+          <th>Khu vực</th>
+          <th>Ghi chú</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{ data.id }}</td>
+          <td>{{ data.tenMay }}</td>
+          <td>{{ data.tenCongDoan }}</td>
+          <td>{{ data.khuVuc }}</td>
+          <td>{{ data.ghiChu }}</td>
+          <td style="text-align:center;">
+            <button (click)="EditMay(data)" nz-button nzType="default"
+              style="background-color: var(--edit-btn);color: white; font-size:16px; cursor: pointer;">
+              <span nz-icon nzType="edit"></span>
+            </button>
+            <button nz-popconfirm nzPopconfirmTitle="Are you sure?" nzOkText="OK" nzCancelText="Cancel"
+              (nzOnConfirm)="DeleteMay(data.id)" (nzOnCancel)="cancel()" nz-button nzType="default"
+              style="background-color: var(--delete-btn);color: white; font-size:16px; cursor: pointer;">
+              <span style="color: white; font-size:16px; cursor: pointer;" nz-icon nzType="delete"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination [nzResponsive]="true" [nzShowTotal]="totalTpl" [nzPageSizeOptions]="[10, 20, 50, 100]"
+      (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
+      [nzPageIndex]="PageIndex" [nzTotal]="TotalRecords" nzShowSizeChanger [nzPageSize]="PageSize" />
+    <ng-template #totalTpl let-total let-range="range">
+      {{ range[0] }}-{{ range[1] }} / Tổng {{ total }} bản ghi
+    </ng-template>
+  </div>
+</div>

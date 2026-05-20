@@ -1,19 +1,19 @@
 <div class="">
-  <div class="search-box" style="display: flex; align-items: end; justify-content: space-between;">
+    <div class="search-box" style="display: flex; align-items: end; justify-content: space-between;">
     <form action="" [formGroup]="SearchForm">
       <div style="display: flex; align-items: end;">
         <div style="width: 250px;">
-          <label for="model" class="fw-600">Model</label>
-          <input nz-input placeholder="" id="model" autocomplete="off" formControlName="model" />
+          <label for="tencongdoan" class="fw-600">Tên công đoạn</label>
+          <input nz-input placeholder="" id="tencongdoan" autocomplete="off" formControlName="tenCongDoan" />
         </div>
-        <button (click)="GetModel()" class="ml-4" nz-button nzType="primary" nzShape="circle">
+        <button (click)="GetCongDoan()" class="ml-4" nz-button nzType="primary" nzShape="circle">
           <span nz-icon nzType="search"></span>
         </button>
       </div>
     </form>
-    <button (click)="modalAddModel()" nz-button nzType="default"
+    <button (click)="modalAddCongDoan()" nz-button nzType="default"
       style="background-color: var(--add-btn); color: white;width: 80px;"><span style="font-size: 20px;" nz-icon
-        nzType="plus-square"></span></button>
+        nzType="plus-circle"></span></button>
   </div>
 
   <div class="table-area mt-5">
@@ -21,27 +21,25 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Item</th>
-          <th>Tên Model</th>
-          <th>Loại Model</th>
-          <th>KHSX FIle Name</th>
+          <th>Tên Công Đoạn</th>
+          <th>Ghi Chú</th>
+          <th>Khu Vực</th>
           <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of listOfData">
           <td>{{ data.id }}</td>
-          <td>{{ data.item }}</td>
-          <td>{{ data.tenModel }}</td>
-          <td>{{ data.loaiModel }}</td>
-          <td>{{ data.khsxFileName }}</td>
+          <td>{{ data.tenCongDoan }}</td>
+          <td>{{ data.ghiChu }}</td>
+          <td>{{ data.khuVuc }}</td>
           <td style="text-align:center;">
-            <button (click)="EditModel(data)" nz-button nzType="default"
+            <button (click)="EditCongDoan(data)" nz-button nzType="default"
               style="background-color: var(--edit-btn);color: white; font-size:16px; cursor: pointer;">
               <span nz-icon nzType="edit"></span>
             </button>
             <button nz-popconfirm nzPopconfirmTitle="Are you sure?" nzOkText="OK" nzCancelText="Cancel"
-              (nzOnConfirm)="DeleteModel(data.id)" (nzOnCancel)="cancel()" nz-button nzType="default"
+              (nzOnConfirm)="DeleteCongDoan(data.id)" (nzOnCancel)="cancel()" nz-button nzType="default"
               style="background-color: var(--delete-btn);color: white; font-size:16px; cursor: pointer;">
               <span style="color: white; font-size:16px; cursor: pointer;" nz-icon nzType="delete"></span>
             </button>
@@ -60,29 +58,35 @@
 
 <nz-modal [(nzVisible)]="isVisible" [nzTitle]="titleModal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
-    <form action="" [formGroup]="FormAddModel">
+    <form action="" [formGroup]="FormAddCongDoan">
       <div>
         <div class="mb-4">
           <nz-form-item>
-            <nz-form-label [nzRequired]="true">Item</nz-form-label>
-            <nz-form-control nzErrorTip="Vui lòng nhập item">
-              <input id="item" nz-input placeholder="Item" formControlName="item" />
+            <nz-form-label [nzRequired]="true">Tên Công Đoạn</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập tên công đoạn">
+              <input id="tencongdoan" nz-input placeholder="Tên Công Đoạn" formControlName="tenCongDoan" />
             </nz-form-control>
           </nz-form-item>
         </div>
+
         <div class="mb-4">
           <nz-form-item>
-            <nz-form-label [nzRequired]="true">Model</nz-form-label>
-            <nz-form-control nzErrorTip="Vui lòng nhập model">
-              <input id="model" nz-input placeholder="Model" formControlName="model" />
+            <nz-form-label [nzRequired]="true">Khu vực</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn khu vực">
+              <nz-select formControlName="khuVuc">
+                <nz-option nzValue="" nzLabel="-- Chọn khu vực --" />
+                <nz-option *ngFor="let item of khuvucOption" [nzLabel]="item.tenKhuVuc" [nzValue]="item.tenKhuVuc">
+                </nz-option>
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>
+
         <div class="mb-4">
           <nz-form-item>
-            <nz-form-label [nzRequired]="true">Loại Model</nz-form-label>
-            <nz-form-control nzErrorTip="Vui lòng nhập loại model">
-              <input id="loaimodel" nz-input placeholder="Loại Model" formControlName="loaiModel" />
+            <nz-form-label>Ghi Chú</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập ghi chú">
+              <input id="ghichu" nz-input placeholder="Ghi Chú" value="" formControlName="ghiChu" />
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -90,3 +94,4 @@
     </form>
   </ng-container>
 </nz-modal>
+

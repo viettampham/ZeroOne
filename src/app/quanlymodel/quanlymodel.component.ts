@@ -15,17 +15,12 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { FormControl, FormBuilder, FormGroup, Validators, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NzFormDirective } from "ng-zorro-antd/form";
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { BoPhanResponseModal } from '../model/ResponseModel/BoPhanResponseModal';
-import { KhuVucResponseModal } from '../model/ResponseModel/KhuVucResponseModal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { RoleResponseModel } from '../model/ResponseModel/RoleResponseModel';
 import { UserService } from '../services/currentUser.service';
 import { ModelResponseModal } from '../model/ResponseModel/ModelResponseModal';
-import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-quanlymodel',
