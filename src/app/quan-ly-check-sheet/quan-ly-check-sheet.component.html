@@ -1,0 +1,107 @@
+<div class="">
+<div class="search-box" style="display: flex; align-items: end; justify-content: space-between;">
+    <form action="" [formGroup]="SearchForm">
+      <div style="display: flex; align-items: end;">
+        <div *ngIf="RoleSPAdmin" style="width: 150px;" class="ml-4">
+          <label for="khuVuc" class="fw-600">Khu vực</label>
+          <div>
+            <nz-select formControlName="khuVuc" (nzOpenChange)="GetCongDoanByKhuVuc()" style="width: 150px;">
+              <nz-option nzValue="" nzLabel="-- Tất cả --" />
+              <nz-option *ngFor="let item of khuvucOptions" [nzValue]="item.tenKhuVuc" [nzLabel]="item.tenKhuVuc" />
+            </nz-select>
+          </div>
+        </div>
+        <div style="width: 200px;" class="ml-4">
+          <label for="congDoan" class="fw-600">Công đoạn</label>
+          <div>
+            <nz-select formControlName="tenCongDoan" (nzOpenChange)="GetMayByCD()" style="width: 200px;">
+              <nz-option nzValue="" nzLabel="-- Tất cả --" />
+              <nz-option *ngFor="let item of congdoanOptions" [nzValue]="item.tenCongDoan" [nzLabel]="item.tenCongDoan" />
+            </nz-select>
+          </div>
+        </div>
+        <div style="width: 150px;" class="ml-4">
+          <label for="may" class="fw-600">Máy</label>
+          <div>
+            <nz-select formControlName="tenmay" (nzOpenChange)="GetCheckSheet()" style="width: 150px;">
+              <nz-option nzValue="" nzLabel="-- Tất cả --" />
+              <nz-option *ngFor="let item of mayOptions" [nzValue]="item.tenMay" [nzLabel]="item.tenMay" />
+            </nz-select>
+          </div>
+        </div>
+        <div style="width: 250px;" class="ml-4">
+          <label for="tenCheckSheet" class="fw-600">CheckSheet</label>
+          <div>
+            <input nz-input placeholder="Nhập tên CheckSheet" formControlName="tenCheckSheet" type="text" />
+          </div>
+        </div>
+
+        <div style="width: 150px;" class="ml-4">
+          <label for="loaiCheckSheet" class="fw-600">Loại CheckSheet</label>
+          <div>
+            <nz-select formControlName="loaiCheckSheet" (nzOpenChange)="GetCheckSheet()" style="width: 150px;">
+              <nz-option nzValue="" nzLabel="-- Tất cả --" />
+              <nz-option *ngFor="let item of loaiCSOptions" [nzValue]="item" [nzLabel]="item" />
+            </nz-select>
+          </div>
+        </div>
+        
+        <button (click)="GetCheckSheet()" class="ml-4" nz-button nzType="primary" nzShape="circle">
+          <span nz-icon nzType="search"></span>
+        </button>
+      </div>
+    </form>
+    <button (click)="modalAddCS()" nz-button nzType="default"
+      style="background-color: var(--add-btn); color: white;width: 80px;"><span style="font-size: 20px;" nz-icon
+        nzType="user-add"></span></button>
+  </div>
+
+  <div class="table-area mt-5">
+    <nz-table style="height: 394px;overflow: auto;" [nzFrontPagination]="false" ngSkipHydration [nzData]="listOfData">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th style="width: 300px;">Tên CheckSheet</th>
+          <th>Tên công đoạn</th>
+          <th>Khu vực</th>
+          <th>Tên máy</th>
+          <th>Loại CheckSheet</th>
+          <th>Ghi chú</th>
+          <th>checkBy</th>
+          <th>Path</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{ data.id }}</td>
+          <td>{{ data.tenCheckSheet }}</td>
+          <td>{{ data.tenCongDoan }}</td>
+          <td>{{ data.khuVuc }}</td>
+          <td>{{ data.tenMay }}</td>
+          <td>{{ data.loaiCheckSheet }}</td>
+          <td>{{ data.ghiChu }}</td>
+          <td>{{ data.checkBy }}</td>
+          <td>{{ data.path }}</td>
+          <td style="text-align:center;">
+            <button (click)="EditCheckSheet(data)" nz-button nzType="default"
+              style="background-color: var(--edit-btn);color: white; font-size:16px; cursor: pointer;">
+              <span nz-icon nzType="edit"></span>
+            </button>
+            <button nz-popconfirm nzPopconfirmTitle="Are you sure?" nzOkText="OK" nzCancelText="Cancel"
+              (nzOnConfirm)="DeleteCheckSheet(data.id)" (nzOnCancel)="cancel()" nz-button nzType="default"
+              style="background-color: var(--delete-btn);color: white; font-size:16px; cursor: pointer;">
+              <span style="color: white; font-size:16px; cursor: pointer;" nz-icon nzType="delete"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination [nzResponsive]="true" [nzShowTotal]="totalTpl" [nzPageSizeOptions]="[10, 20, 50, 100]"
+      (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
+      [nzPageIndex]="PageIndex" [nzTotal]="TotalRecords" nzShowSizeChanger [nzPageSize]="PageSize" />
+    <ng-template #totalTpl let-total let-range="range">
+      {{ range[0] }}-{{ range[1] }} / Tổng {{ total }} bản ghi
+    </ng-template>
+  </div>
+</div>

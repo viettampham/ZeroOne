@@ -78,3 +78,55 @@
     </ng-template>
   </div>
 </div>
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="titleModal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form action="" [formGroup]="FormAddMay">
+      <div>
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Tên máy</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng nhập tên máy">
+              <input id="tenMay" nz-input placeholder="Tên máy" formControlName="tenMay" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Khu vực</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn khu vực">
+              <nz-select formControlName="khuVuc">
+                <nz-option nzValue="" nzLabel="-- Chọn khu vực --" />
+                <nz-option *ngFor="let item of khuvucOption" [nzLabel]="item.tenKhuVuc" [nzValue]="item.tenKhuVuc">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Bộ phận</nz-form-label>
+            <nz-form-control nzErrorTip="Vui lòng chọn tên công đoạn">
+              <nz-select formControlName="tenCongDoan">
+                <nz-option nzValue="" nzLabel="-- Chọn công đoạn --" />
+                <nz-option *ngFor="let item of congdoanOption" [nzLabel]="item.tenCongDoan" [nzValue]="item.tenCongDoan">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        
+        <div class="mb-4">
+          <nz-form-item>
+            <nz-form-label>Ghi chú</nz-form-label>
+            <nz-form-control>
+              <input id="ghichu" nz-input placeholder="Ghi chú" formControlName="ghiChu" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

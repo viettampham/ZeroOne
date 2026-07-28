@@ -47,7 +47,7 @@ import { MayResponseModal } from '../model/ResponseModel/MayResponseModal';
   styleUrl: './quan-ly-may.component.scss'
 })
 export class QuanLyMayComponent {
-  @Input() data: string = '';
+  @Input() data: MayResponseModal | null = null;
   CurrentUser: any;
   SearchForm: FormGroup;
   isVisible: boolean = false
@@ -57,17 +57,24 @@ export class QuanLyMayComponent {
   listOfData: MayResponseModal[] = [];
   congdoanOption: CongDoanResponse[] = [];
   khuvucOption: KhuVucResponseModal[] = [];
+  titleModal: string = "";
+  FormAddMay: FormGroup;
   constructor(private fb: FormBuilder, private api: ApiService, private userService: UserService, private notification: NzNotificationService) {
     this.SearchForm = this.fb.group({
       tenMay: [""],
       tenCongDoan: [""],
       khuVuc: [""]
     });
+    this.FormAddMay = this.fb.group({
+      tenMay: ["", Validators.required],
+      tenCongDoan: ["", Validators.required],
+      khuVuc: ["", Validators.required],
+      ghiChu: [""]
+    });
   }
 
   ngOnInit(): void {
     this.userService.user$.subscribe(user => {
-      this.data = user;
       this.CurrentUser = user;
       this.GetKhuVuc();
       this.GetCongDoan();
@@ -77,12 +84,23 @@ export class QuanLyMayComponent {
   GetKhuVuc() {
     this.api.GetKhuVucByRole().subscribe((res: any) => {
       this.khuvucOption = res.listData;
+
+      console.log(this.CurrentUser);
+
+      if (this.CurrentUser.CapBacRole != 1) {
+        this.SearchForm.patchValue({
+          khuVuc: this.CurrentUser.KhuVuc
+        });
+
+        this.FormAddMay.patchValue({
+          khuVuc: this.CurrentUser.KhuVuc
+        });
+        this.GetCongDoan();
+      }
     });
   }
 
   GetCongDoan() {
-    console.log(this.SearchForm.value);
-
     this.api.GetCBCongDoanByKhuVuc(this.SearchForm.value.khuVuc).subscribe((res: any) => {
       if (res.Status = "SUCCESS") {
         this.congdoanOption = res.listData;
@@ -109,14 +127,27 @@ export class QuanLyMayComponent {
   }
 
   modalAddMay() {
-
+    this.isVisible = true;
+    this.titleModal = "Thêm máy";
+    this.FormAddMay.reset();
+    this.FormAddMay.patchValue({
+      khuVuc: this.CurrentUser.KhuVuc
+    });
   }
 
   EditMay(data: MayResponseModal) {
-    
+    this.isVisible = true;
+    this.titleModal = "Sửa máy";
+    this.data = data;
+    this.FormAddMay.patchValue({
+      tenMay: data.tenMay,
+      tenCongDoan: data.tenCongDoan,
+      khuVuc: data.khuVuc,
+      ghiChu: data.ghiChu
+    });
   }
 
-  DeleteMay(id: number){
+  DeleteMay(id: number) {
     console.log(id);
     this.api.DeleteMay(id).subscribe((res: any) => {
       if (res.status == "SUCCESS") {
@@ -128,8 +159,8 @@ export class QuanLyMayComponent {
     });
   }
 
-  cancel(){
-    
+  cancel() {
+
   }
 
   onPageIndexChange(event: number) {
@@ -139,6 +170,52 @@ export class QuanLyMayComponent {
   onPageSizeChange(event: number) {
     this.PageSize = event;
     this.GetMDSMay();
+  }
+
+  handleCancel() {
+    this.isVisible = false;
+  }
+
+  handleOk() {
+    if (this.FormAddMay.invalid) {
+      Object.values(this.FormAddMay.controls).forEach(control => {
+        control.markAsTouched();
+        control.updateValueAndValidity();
+      });
+      return;
+    }
+    if (this.titleModal == "Thêm máy") {
+      this.api.CreateMay(this.FormAddMay.value).subscribe((res: any) => {
+        if (res.status == "SUCCESS") {
+          this.notification.success('Thành công', 'Thêm máy thành công');
+          this.isVisible = false;
+          this.GetMDSMay();
+        } else if (res.status == "WARNING") {
+          this.notification.warning(res.status, res.message);
+        } else {
+          this.notification.error(res.status, res.message);
+        }
+      });
+    } else if (this.titleModal == "Sửa máy") {
+      var obj = {
+        tenMay: this.FormAddMay.value.tenMay,
+        tenCongDoan: this.FormAddMay.value.tenCongDoan,
+        khuVuc: this.FormAddMay.value.khuVuc,
+        ghiChu: this.FormAddMay.value.ghiChu,
+        id: this.data?.id
+      };
+      this.api.EditMay(obj).subscribe((res: any) => {
+        if (res.status == "SUCCESS") {
+          this.notification.success('Thành công', 'Sửa máy thành công');
+          this.isVisible = false;
+          this.GetMDSMay();
+        } else if (res.status == "WARNING") {
+          this.notification.warning(res.status, res.message);
+        } else {
+          this.notification.error(res.status, res.message);
+        }
+      });
+    }
   }
 
 }

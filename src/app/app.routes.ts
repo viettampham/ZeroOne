@@ -5,6 +5,8 @@ import { QuanLyNhanVienComponent } from './quan-ly-nhan-vien/quan-ly-nhan-vien.c
 import { QuanlymodelComponent } from './quanlymodel/quanlymodel.component';
 import { QuanLyCongDoanComponent } from './quan-ly-cong-doan/quan-ly-cong-doan.component';
 import { QuanLyMayComponent } from './quan-ly-may/quan-ly-may.component';
+import { QuanLyCheckSheetComponent } from './quan-ly-check-sheet/quan-ly-check-sheet.component';
+import { ChatComponent } from './chat/chat.component';
 
 export const routes: Routes = [
     //{path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
@@ -17,6 +19,8 @@ export const routes: Routes = [
             { path: 'quanlymodel', component: QuanlymodelComponent },
             { path: 'quanlycongdoan', component: QuanLyCongDoanComponent },
             { path: 'quanlymay', component: QuanLyMayComponent },
+            { path: 'quanlychecksheet', component: QuanLyCheckSheetComponent },
+            {path: 'chat', component: ChatComponent}
         ],
     },
 ];

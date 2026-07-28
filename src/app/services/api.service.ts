@@ -12,8 +12,6 @@ import { RoleResponseModel } from '../model/ResponseModel/RoleResponseModel';
 import { ModelResponseModal } from '../model/ResponseModel/ModelResponseModal';
 import { CongDoanResponse } from '../model/ResponseModel/CongDoanResponse';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -112,6 +110,30 @@ export class ApiService {
 
   DeleteMay=(id: number)=>{
     return this.httpCLient.delete(`${environment.api_domain}/May/delete?id=${id}`);
+  }
+
+  CreateMay=(req:any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/May/create`,req);
+  }
+
+  EditMay=(req:any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/May/update`,req);
+  }
+
+  GetMayNoPaging=(req:any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/May/get-danh-sach-nopaging`,req);
+  }
+
+  GetLoaiCS=()=>{
+    return this.httpCLient.get(`${environment.api_domain}/api/CheckSheet/get-loaics`);
+  }
+
+  SearchCheckSheet=(req:any)=>{
+    return this.httpCLient.post(`${environment.api_domain}/api/CheckSheet/get-checksheet`,req);
+  }
+
+  DeleteCheckSheet=(id: number)=>{
+    return this.httpCLient.delete(`${environment.api_domain}/api/CheckSheet/delete?id=${id}`);
   }
 
 }

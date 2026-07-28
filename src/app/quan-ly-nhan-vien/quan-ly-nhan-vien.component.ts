@@ -108,7 +108,6 @@ export class QuanLyNhanVienComponent {
 
   ngOnInit(): void {
     this.userService.user$.subscribe(user => {
-      this.data = user;
       this.CurrentUser = user;
       this.loadBoPhan();
     });

@@ -80,6 +80,9 @@ export class DashboardComponent {
       case 'QuanLyCongDoan':
         this.router.navigate(['/dashboard/quanlycongdoan']);
         break;
+      case 'Chat':
+        this.router.navigate(['/dashboard/chat']);
+        break;
       default:
         break;
     }
